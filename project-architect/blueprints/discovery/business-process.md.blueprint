@@ -1,0 +1,24 @@
+# Mapeamento de Processo de Negócio: {{PROJECT}}
+
+## 1. Visão Geral
+**Contexto:** {{CONTEXT}}
+**Objetivo Principal:** [Descreva o que o negócio quer resolver]
+
+## 2. Atores e Personas
+| Ator | Descrição | Papel no Sistema |
+| :--- | :--- | :--- |
+| [Ex: Cliente] | [Ex: Pessoa que contrata o serviço] | Solicitar, pagar e avaliar. |
+| [Ex: Admin] | [Ex: Gestor da plataforma] | Aprovar cadastros e extrair relatórios. |
+
+## 3. Fluxo Principal (Happy Path)
+1. **Início:** [Ação que dispara o processo]
+2. **Processamento:** [Passos lógicos intermediários]
+3. **Conclusão:** [Estado final desejado]
+
+## 4. Regras de Negócio Críticas
+- **RN01:** [Ex: Um pedido só pode ser cancelado em até 5 minutos]
+- **RN02:** [Ex: O sistema deve validar o saldo antes de processar a venda]
+
+## 5. Fluxos de Exceção
+- **E01:** O que acontece se o pagamento falhar?
+- **E02:** O que acontece se o estoque acabar durante a seleção?

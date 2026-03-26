@@ -1,0 +1,22 @@
+# Product Backlog & User Stories: {{PROJECT}}
+
+## Legenda de Prioridade (MoSCoW)
+- **M**: Must Have (Essencial para o MVP)
+- **S**: Should Have (Importante)
+- **C**: Could Have (Desejável)
+- **W**: Won't Have (Futuro)
+
+## Backlog Inicial
+
+### [EPIC 01: Nome do Épico]
+| ID | User Story | Prioridade | Critérios de Aceite |
+| :--- | :--- | :---: | :--- |
+| US01 | **Como** [Ator], **eu quero** [Ação], **para que** [Valor]. | M | - [ ] Validação X; <br> - [ ] Persistir no banco Y; |
+| US02 | **Como** [Ator], **eu quero** [Ação], **para que** [Valor]. | S | - [ ] Feedback visual Z; |
+
+## Detalhamento BDD (Gherkin)
+**Funcionalidade:** [Nome da US]
+  **Cenário:** Sucesso na operação
+    **Dado que** [Contexto inicial]
+    **Quando** [Ação executada]
+    **Então** [Resultado esperado]

@@ -1,0 +1,20 @@
+# Requisitos Funcionais e Não-Funcionais: {{PROJECT}}
+
+## 1. Requisitos Funcionais (RF)
+- [ ] **RF01:** O sistema deve permitir o cadastro de {{PROJECT}} com campos A, B e C.
+- [ ] **RF02:** O sistema deve gerar relatórios em formato PDF/Excel.
+- [ ] **RF03:** O sistema deve integrar com a API externa de [Nome].
+
+## 2. Requisitos Não-Funcionais (RNF) - O Padrão Sênior
+- **Segurança:** Autenticação via JWT e isolamento Multi-tenant (FSI Pattern).
+- **Performance:** Queries de leitura não devem exceder 200ms.
+- **Disponibilidade:** O sistema deve operar em regime 24/7 com Health Checks ativos.
+- **Interface:** UI baseada em Glassmorphism com suporte a Dark/Light mode.
+
+## 3. Matriz de Entidades Relacionadas
+- **Entidade A** -> (1:N) -> **Entidade B**
+- **Entidade C** -> (N:N) -> **Entidade A**
+
+## 4. Glossário (Linguagem Ubíqua)
+- **Termo A:** Definição específica para este negócio.
+- **Termo B:** Definição específica para este negócio.
