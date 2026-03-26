@@ -27,7 +27,7 @@ def scaffold(name: str, output: str, theme: str = "dark"):
     print(f"   Theme: {theme}")
     print(f"   Output: {base}\n")
 
-    # ========== Design Manifesto ==========
+    # ========== Design Manifesto (Sincronizado com SKILL.md) ==========
     create_file(str(base / "ux-ui-patterns.md"), generate_ux_strategy(name))
     
     # ========== Style Tokens (Tailwind/CSS Vars) ==========
@@ -112,13 +112,14 @@ export const GlassCard: React.FC<{children: React.ReactNode}> = ({ children }) =
 );"""
 
 def generate_main_shell(name):
+    # Corrigido: Uso de {{ }} para escapar chaves em f-strings
     return f"""import React from 'react';
 
 export const MainShell: React.FC = () => {{
   return (
     <div className="min-h-screen bg-[hsl(var(--bg))] text-[hsl(var(--foreground))]">
       <div className="flex">
-        {/* Sidebar and Navigation would go here */}
+        {{/* Sidebar and Navigation would go here */}}
         <main className="flex-1 p-8 animate-fade-in">
           {{/* Content Slot */}}
         </main>
@@ -158,7 +159,7 @@ export const Sidebar: React.FC = () => (
       <h1 className="text-xl font-bold text-accent">{name}</h1>
     </div>
     <nav className="mt-8 flex-1">
-      {/* Links go here */}
+      {{/* Links go here */}}
     </nav>
   </aside>
 );"""
