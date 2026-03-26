@@ -1,0 +1,14 @@
+## 📝 Descrição
+## 🛠️ Tech Lead Checklist (Obrigatório)
+- [ ] **DDD**: A lógica de negócio está na Entidade/Value Object (não no Service)?
+- [ ] **Clean Arch**: As dependências apontam para dentro? (Domain não conhece Infra/API).
+- [ ] **Performance**: Consultas de leitura usam `.AsNoTracking()`?
+- [ ] **Resiliência**: `CancellationToken` foi propagado em todos os métodos async?
+- [ ] **Contrato**: Foi usado `Result Pattern` em vez de Exceptions para erros de negócio?
+- [ ] **DB**: O mapeamento Fluent API foi atualizado (se necessário)?
+
+## 🧪 Testes
+- [ ] Unit Tests incluídos para a regra de negócio?
+- [ ] ArchTests passaram localmente (`dotnet test`)?
+
+## 📸 Screenshots (Opcional para UI)

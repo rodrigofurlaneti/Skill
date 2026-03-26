@@ -1,48 +1,54 @@
 ---
 name: project-architect
 description: >
-  Fullstack project architect for .NET + React applications with Senior DBA and UX/UI Specialist focus. 
-  Use this skill to create projects from scratch (scaffold), validate architectures, refactor code to 
-  follow DDD/Clean Architecture/SOLID, optimize EF Core performance, or design distinctive user interfaces.
+  Fullstack project architect for .NET + React applications with Senior DBA, UX/UI, 
+  Tech Lead Code Review, and DevOps/SRE focus. 
+  Use this skill to create projects (scaffold), validate architectures, refactor code to 
+  follow DDD/Clean Architecture/SOLID, optimize EF Core performance, perform professional 
+  code reviews, or configure cloud-native infrastructure (Docker/CI/CD).
   Trigger on: "criar projeto", "scaffold", "DDD", "clean architecture", "EF Core performance", 
-  "multi-tenant isolation", "design system", "UX/UI", "glassmorphism", "melhorar interface".
+  "multi-tenant isolation", "code review", "revisar código", "refatoração", "design system",
+  "configurar devops", "dockerizar", "pipeline ci/cd".
 ---
 
-# Project Architect — .NET DDD + React + DBA & UX Mastery
+# Project Architect — .NET DDD + React + DBA, UX, Code Review & DevOps Mastery
 
-This skill creates production-grade fullstack applications following battle-tested patterns, or validates existing projects against these standards. It encapsulates the architecture wisdom of real-world projects: Domain-Driven Design, Clean Architecture, SOLID principles, High-Performance Database Design, and Distinctive UX/UI.
+This skill creates production-grade fullstack applications, validates existing projects, or performs senior-level governance. It encapsulates the architecture wisdom of real-world projects: Domain-Driven Design, Clean Architecture, SOLID, High-Performance Database Design, Distinctive UX/UI, and SRE Resilience.
 
-## When This Skill Activates
+## Modes of Operation
 
-There are two modes of operation:
-1. **Scaffold Mode** — Generate a new project from scratch (Backend, Database, and Frontend).
+1. **Scaffold Mode** — Generate a new project from scratch (Backend, Database, Frontend, UX, DevOps).
 2. **Audit Mode** — Analyze an existing project for architectural, database, or usability violations.
+3. **Review Mode (Tech Lead)** — Professional code review of snippets or Pull Requests to ensure the "Gold Standard".
+4. **Ops Mode (SRE)** — Configure Docker, CI/CD pipelines, and structured observability.
 
 ---
 
 ## Step 1: Gather Requirements
 
-Before generating, ask about:
-- **Project name** (namespaces, folders, solution).
-- **Domain entities** (what the app manages).
+Before generating or reviewing, ask (if not provided):
+- **Project/Feature name** & **Domain context**.
 - **Database**: SQL Server (default), PostgreSQL, or MySQL.
 - **Multi-tenancy**: Is data isolation required? (Critical for FSI patterns).
-- **UI Style**: Glassmorphism (default) or Flat Modern.
+- **Infrastructure**: Docker required? Target CI/CD (GitHub Actions default).
 
 ---
 
-## Step 2: Architecture & Design Overview
+## Step 2: Architecture & Governance Overview
 
 ### Backend (.NET) — Clean Architecture + Senior DBA
 The backend follows a strict layered architecture where dependencies flow inward.
 - **Domain Layer**: Sacred business rules, rich entities, and value objects.
-- **Infrastructure Layer**: Explicit Fluent API mappings, optimized indexes, and performance-tuned queries.
-- **DB Focus**: No `nvarchar(max)`, mandatory `AsNoTracking` for reads, and `AsSplitQuery` for complex graphs.
+- **Infrastructure Layer**: Explicit Fluent API mappings and performance-tuned queries.
+- **DB Mastery**: No `nvarchar(max)`, mandatory `AsNoTracking` for reads, and `AsSplitQuery`.
 
 ### Frontend (React + TypeScript) — Feature-Based + UX Specialist
-The frontend follows a feature-based architecture with a "Distinctive, not decorative" philosophy.
 - **UI/UX**: Glassmorphism, Plus Jakarta Sans typography, and high-performance animations.
-- **Design System**: Strict spacing grid, accessibility (a11y), and consistent HSL color tokens.
+- **State**: Zustand with persistence and strict TypeScript interfaces.
+
+### Code Review & DevOps — Tech Lead + SRE Governance
+- **Tech Lead**: DRY, KISS, Result Pattern, and NetArchTest enforcement.
+- **SRE**: Multi-stage Dockerfiles (Alpine), CI/CD pipelines, and Structured Logging (Serilog).
 
 ---
 
@@ -51,45 +57,36 @@ The frontend follows a feature-based architecture with a "Distinctive, not decor
 ### 1. Backend & DBA Must-Haves
 - [ ] **Rich Entities**: Business logic IN the entity; private setters for EF Core.
 - [ ] **Fluent API**: Use `IEntityTypeConfiguration<T>` (No Data Annotations).
-- [ ] **Strict SQL Typing**: Explicit `HasMaxLength(n)` and `HasColumnType("decimal(18,2)")`.
 - [ ] **Read Performance**: All read queries MUST use `.AsNoTracking()`.
 - [ ] **Data Isolation**: `.HasQueryFilter()` for multi-tenant protection (FSI pattern).
-- [ ] **Cartesian Guard**: Use `.AsSplitQuery()` for complex `.Include()` chains.
-- [ ] **CancellationToken**: Propagated through all async chains (API to DB).
-- [ ] **CQRS**: Commands return `Result<T>`, Queries return DTOs (never entities).
 
 ### 2. Frontend & UX Must-Haves
 - [ ] **Zero `any` types**: Strict TypeScript throughout.
-- [ ] **Lazy Loading**: Route-based code splitting with `React.lazy + Suspense`.
 - [ ] **Glassmorphism**: Consistent use of `glass` utility classes and `backdrop-blur`.
-- [ ] **Accessibility**: Proper ARIA labels, focus states, and 4.5:1 contrast ratio.
-- [ ] **Zustand Persistence**: Stores with `persist` middleware and `partialize`.
-- [ ] **Performance**: `React.memo` for list items and `useCallback` for props-drilled handlers.
+- [ ] **A11y**: Proper ARIA labels and contrast compliance.
 
----
-
-## Design Philosophy
-
-### "The Domain is Sacred, the DB is Optimized"
-Business rules belong in the Domain. Database performance is ensured by explicit mappings and index strategies. We avoid generic AI aesthetics by using intentional typography and motion that serves a purpose.
-
-### "Database is not a dump"
-The schema must be as clean as the code. Mappings must be explicit to avoid `nvarchar(max)`. Every query is written thinking about the execution plan.
+### 3. Review & Ops (The Safety Net)
+- [ ] **Async Hygiene**: `CancellationToken` propagated through all async calls.
+- [ ] **Result Pattern**: Explicit success/failure handling (No business exceptions).
+- [ ] **Docker Security**: Non-root users and Alpine-based images.
+- [ ] **Observability**: Structured JSON logs and `/health` endpoints.
 
 ---
 
 ## Reference Files
 
-For detailed implementation patterns, read these reference files:
-
 - **`references/dotnet-ddd.md`** — Clean Architecture & DDD patterns.
 - **`references/ef-core-dba.md`** — EF Core & SQL Server performance mastery.
-- **`references/react-frontend.md`** — Feature-based React & TypeScript patterns.
+- **`references/react-frontend.md`** — Feature-based React patterns.
 - **`references/ux-ui-patterns.md`** — Distinctive Design System & Usability.
+- **`references/code-review.md`** — Tech Lead guidelines for code governance.
+- **`references/devops-observability.md`** — SRE patterns for Docker, CI/CD, and Logs.
 
-## Scaffold Scripts
+## Scaffold & Automation Scripts
 
 - **`scripts/scaffold_backend.py`** — Generates the .NET Solution.
 - **`scripts/scaffold_frontend.py`** — Generates the React App.
-- **`scripts/scaffold_dba.py`** — Generates Fluent API and Persistence configurations.
-- **`scripts/scaffold_ux.py`** — Generates Design System tokens and UI components.
+- **`scripts/scaffold_dba.py`** — Generates Fluent API configurations.
+- **`scripts/scaffold_ux.py`** — Generates Design System tokens.
+- **`scripts/scaffold_review.py`** — Generates PR templates and ArchTests.
+- **`scripts/scaffold_devops.py`** — Generates Dockerfiles and CI/CD Workflows.

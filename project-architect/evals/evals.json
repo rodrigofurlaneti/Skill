@@ -157,6 +157,70 @@
           "type": "quality"
         }
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Atue como Tech Lead e faça o Code Review deste código: [Snippet de uma classe Service com N+1 Query, lógica no controlador e sem CancellationToken].",
+      "expected_output": "Revisão detalhada apontando violações de DDD, vazamento de lógica e riscos de performance.",
+      "assertions": [
+        {
+          "id": "review-n1-detection",
+          "text": "Identifica o problema de N+1 queries no loop do banco de dados.",
+          "type": "tech_lead_review"
+        },
+        {
+          "id": "review-logic-leak",
+          "text": "Aponte que a lógica de negócio deve estar na Entidade e não no Service ou Controller.",
+          "type": "tech_lead_review"
+        },
+        {
+          "id": "review-missing-ct",
+          "text": "Critica a falta de propagação do CancellationToken.",
+          "type": "tech_lead_review"
+        },
+        {
+          "id": "review-result-pattern",
+          "text": "Sugere o uso do Result Pattern em vez de lançar exceções para regras de negócio.",
+          "type": "recommendation"
+        },
+        {
+          "id": "review-naming-standard",
+          "text": "Critica nomes de métodos genéricos e sugere nomes baseados na linguagem ubíqua.",
+          "type": "code_quality"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Configure a infraestrutura de DevOps e Observabilidade para o projeto 'FSI.Sistemas'.",
+      "expected_output": "Geração de Dockerfile multi-stage, pipeline CI/CD e configuração de Health Checks/Logs estruturados.",
+      "assertions": [
+        {
+          "id": "devops-docker-multistage",
+          "text": "Dockerfile utiliza multi-stage builds e imagem base Alpine por segurança.",
+          "type": "infrastructure"
+        },
+        {
+          "id": "devops-cicd-github",
+          "text": "Workflow do GitHub Actions configurado para Restore, Build e Test automatizados.",
+          "type": "infrastructure"
+        },
+        {
+          "id": "devops-health-checks",
+          "text": "Endpoints de Liveness e Readiness implementados para monitoramento do container.",
+          "type": "observability"
+        },
+        {
+          "id": "devops-structured-logging",
+          "text": "Configuração de logs estruturados em JSON para indexação em ferramentas de monitoramento.",
+          "type": "observability"
+        },
+        {
+          "id": "devops-resilience-polly",
+          "text": "Implementação de políticas de Retry e Circuit Breaker para chamadas externas.",
+          "type": "resilience"
+        }
+      ]
     }
   ]
 }

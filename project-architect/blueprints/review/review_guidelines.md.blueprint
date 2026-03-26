@@ -1,0 +1,16 @@
+# Diretrizes de Code Review — {{NAME}}
+
+## 1. Domínio não é Anêmico
+- Entidades devem ter `private set`.
+- Métodos devem ser expressivos: `order.Cancel()` em vez de `order.Status = "Cancelled"`.
+
+## 2. Camada de Aplicação (Handlers)
+- Handlers devem ser "magros". Lógica complexa vai para o Domain.
+- Sempre valide o input com `FluentValidation` antes de processar.
+
+## 3. Acesso a Dados (Sênior DBA)
+- Evite `Include` excessivo. Use Projeções (`.Select()`) para retornar DTOs.
+- Verifique se o `TenantId` está sendo filtrado corretamente em sistemas Multi-tenant.
+
+## 4. Tratamento de Erros
+- Não use `try-catch` para controle de fluxo. Use `Result.Failure()`.

@@ -1,0 +1,12 @@
+import React from 'react';
+import { use{{NAME}}Store } from '@/store/{{NAME}}Store';
+
+export const {{NAME}}: React.FC = () => {
+    return (
+        <div className="glass backdrop-blur-md border border-white/20 p-6 rounded-2xl">
+            <h1 className="text-2xl font-bold text-white font-plus-jakarta">
+                {{NAME}} Module
+            </h1>
+        </div>
+    );
+};

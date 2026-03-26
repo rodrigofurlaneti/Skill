@@ -1,0 +1,45 @@
+using NetArchTest.Rules;
+using Xunit;
+
+namespace {{NAME}}.Architecture.Tests;
+
+public class ArchitectureTests
+{
+    private const string DomainNamespace = "{{NAME}}.Domain";
+    private const string ApplicationNamespace = "{{NAME}}.Application";
+    private const string InfrastructureNamespace = "{{NAME}}.Infrastructure";
+    private const string ApiNamespace = "{{NAME}}.API";
+
+    [Fact]
+    public void Domain_Should_Not_HaveDependencyOnOtherLayers()
+    {
+        var result = Types.InAssembly(typeof({{NAME}}.Domain.Common.Entity).Assembly)
+            .ShouldNot()
+            .HaveDependencyOnAny(ApplicationNamespace, InfrastructureNamespace, ApiNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "A camada de Domínio não pode depender de nenhuma outra camada.");
+    }
+
+    [Fact]
+    public void Application_Should_Not_HaveDependencyOnInfrastructureOrApi()
+    {
+        var result = Types.InAssembly(typeof({{NAME}}.Application.Common.Models.Result).Assembly)
+            .ShouldNot()
+            .HaveDependencyOnAny(InfrastructureNamespace, ApiNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "A camada de Aplicação não pode depender da Infraestrutura ou da API.");
+    }
+
+    [Fact]
+    public void Controllers_Should_Use_MediatR()
+    {
+        var result = Types.InNamespace(ApiNamespace + ".Controllers")
+            .Should()
+            .HaveDependencyOn("MediatR")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "Os Controllers devem obrigatoriamente usar MediatR (CQRS).");
+    }
+}
