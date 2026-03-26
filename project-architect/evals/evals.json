@@ -4,104 +4,157 @@
     {
       "id": 1,
       "prompt": "Preciso criar um sistema de gerenciamento de clínica veterinária. O backend deve ser em .NET com DDD e o frontend em React com TypeScript. As entidades principais são: Pet, Owner, Appointment, Veterinarian. Banco PostgreSQL.",
-      "expected_output": "Generates a complete backend scaffold with 4 entities following DDD/Clean Architecture patterns, plus a React frontend with feature pages for each entity, using PostgreSQL configuration.",
+      "expected_output": "Geração de scaffold completo seguindo Clean Architecture, DDD, e práticas de DBA (Fluent API e Tipagem Estrita).",
       "files": [],
       "assertions": [
         {
-          "id": "backend-structure",
-          "text": "Backend has 4 layers: Domain, Application, Infrastructure, API",
+          "id": "backend-structure-layers",
+          "text": "Backend possui as 4 camadas: Domain, Application, Infrastructure e API.",
           "type": "structural"
         },
         {
-          "id": "entity-rich",
-          "text": "Entities have factory methods and private setters (not anemic)",
+          "id": "domain-rich-entities",
+          "text": "Entidades possuem métodos de fábrica e setters privados para evitar modelos anêmicos.",
           "type": "code_quality"
         },
         {
-          "id": "cqrs-pattern",
-          "text": "Commands and Queries are separated with proper MediatR handlers",
+          "id": "domain-value-objects",
+          "text": "Uso de Value Objects para tipos validados (ex: Email, CPF).",
+          "type": "code_quality"
+        },
+        {
+          "id": "app-cqrs-mediatr",
+          "text": "Separação clara entre Commands e Queries com handlers MediatR.",
           "type": "pattern"
         },
         {
-          "id": "frontend-typed",
-          "text": "Frontend has zero 'any' types in generated code",
+          "id": "app-fluent-validation",
+          "text": "Implementação de validadores FluentValidation para cada comando.",
+          "type": "pattern"
+        },
+        {
+          "id": "app-pipeline-behaviors",
+          "text": "Pipeline Behaviors presentes para Logging, Performance e Validação.",
+          "type": "pattern"
+        },
+        {
+          "id": "infra-fluent-api",
+          "text": "Mapeamento utilizando IEntityTypeConfiguration em arquivos separados.",
           "type": "code_quality"
         },
         {
-          "id": "frontend-lazy",
-          "text": "Routes use React.lazy() and Suspense for code splitting",
+          "id": "infra-db-strict-typing",
+          "text": "Uso de .HasMaxLength() para strings e precisão para decimais.",
+          "type": "code_quality"
+        },
+        {
+          "id": "api-problem-details",
+          "text": "ApiController base mapeia Result Pattern para ProblemDetails (RFC 7807).",
+          "type": "structural"
+        },
+        {
+          "id": "api-cancellation-token",
+          "text": "CancellationToken propagado em todas as chamadas assíncronas.",
+          "type": "code_quality"
+        },
+        {
+          "id": "frontend-typescript-strict",
+          "text": "Zero uso de tipos 'any' no código TypeScript.",
+          "type": "code_quality"
+        },
+        {
+          "id": "frontend-lazy-loading",
+          "text": "Rotas utilizam React.lazy() e Suspense para code splitting.",
           "type": "performance"
         },
         {
-          "id": "db-postgresql",
-          "text": "Infrastructure uses UseNpgsql not UseSqlServer",
+          "id": "frontend-state-zustand",
+          "text": "Zustand stores com persistência e partialize configurados.",
+          "type": "pattern"
+        },
+        {
+          "id": "frontend-i18n-ready",
+          "text": "Estrutura de i18n (locales) preparada para múltiplos idiomas.",
+          "type": "completeness"
+        },
+        {
+          "id": "db-pg-configuration",
+          "text": "Infrastructure configurada com UseNpgsql para PostgreSQL.",
           "type": "configuration"
         }
       ]
     },
     {
       "id": 2,
-      "prompt": "Tenho um projeto .NET existente que não segue DDD direito. Os controllers têm lógica de negócio, os models são anêmicos, não tem repository pattern. Analise e me diga o que precisa mudar.",
-      "expected_output": "Identifies architectural violations: anemic models, business logic in controllers, missing repository abstraction, no CQRS, no validation pipeline. Provides specific fix recommendations with code examples.",
-      "files": [],
+      "prompt": "Analise as queries deste repositório legatário e sugira melhorias de performance de banco.",
+      "expected_output": "Identifica ausência de .AsNoTracking(), explosão cartesiana e sugere .AsSplitQuery() ou Projeções.",
       "assertions": [
         {
-          "id": "identifies-anemic",
-          "text": "Identifies anemic model anti-pattern",
+          "id": "audit-notracking",
+          "text": "Identifica consultas de leitura que não utilizam .AsNoTracking().",
           "type": "analysis"
         },
         {
-          "id": "identifies-fat-controller",
-          "text": "Identifies business logic in controllers as a violation",
+          "id": "audit-split-query",
+          "text": "Identifica múltiplos Includes e sugere .AsSplitQuery() para evitar explosão cartesiana.",
           "type": "analysis"
         },
         {
-          "id": "recommends-repository",
-          "text": "Recommends implementing Repository Pattern with interfaces in Domain",
+          "id": "audit-projections",
+          "text": "Recomenda projeções Select() em vez de carregar entidades completas.",
           "type": "recommendation"
         },
         {
-          "id": "provides-code",
-          "text": "Provides concrete code examples for fixes, not just descriptions",
-          "type": "quality"
+          "id": "audit-anemic-detection",
+          "text": "Detecta entidades anêmicas e sugere a refatoração para Rich Domain.",
+          "type": "analysis"
+        },
+        {
+          "id": "audit-async-ct",
+          "text": "Identifica métodos assíncronos ignorando o CancellationToken.",
+          "type": "analysis"
         }
       ]
     },
     {
       "id": 3,
-      "prompt": "Create a fullstack e-commerce project. Name: ShopFlow. Entities: Product, Category, Order, OrderItem, Customer. Use SQL Server. Frontend with Tailwind CSS. I need the complete scaffold ready to build.",
-      "expected_output": "Runs both scaffold scripts to generate a complete backend and frontend project. Backend has all 5 entities with proper DDD structure. Frontend has pages for products, categories, orders, and customers.",
-      "files": [],
+      "prompt": "Criar um projeto multi-tenant chamado 'FSI.Support'. Entidades: Ticket, Customer. Use SQL Server.",
+      "expected_output": "Scaffold com Global Query Filters para TenantId e índices compostos para isolamento.",
       "assertions": [
         {
-          "id": "all-entities",
-          "text": "All 5 entities (Product, Category, Order, OrderItem, Customer) have files generated",
-          "type": "completeness"
+          "id": "mt-query-filter",
+          "text": "Implementação automática de .HasQueryFilter() para isolamento de dados.",
+          "type": "security"
         },
         {
-          "id": "result-pattern",
-          "text": "Application layer includes Result<T> pattern for error handling",
-          "type": "pattern"
+          "id": "mt-tenant-index",
+          "text": "Presença de índices compostos (IX_TableName_TenantId) para performance.",
+          "type": "performance"
         },
         {
-          "id": "pipeline-behaviors",
-          "text": "Validation, Logging, and Performance pipeline behaviors are present",
-          "type": "pattern"
+          "id": "mt-concurrency-rowversion",
+          "text": "Uso de RowVersion para controle de concorrência otimista.",
+          "type": "code_quality"
         },
         {
-          "id": "frontend-components",
-          "text": "UI component library includes Button, Card, Input, Modal, Badge, Spinner",
-          "type": "completeness"
+          "id": "mt-input-sanitization",
+          "text": "Uso de helpers para sanitização de inputs contra ataques XSS.",
+          "type": "security"
         },
         {
-          "id": "error-boundary",
-          "text": "App.tsx wraps everything in ErrorBoundary",
+          "id": "mt-route-guards",
+          "text": "ProtectedRoute e RoleGuard implementados para segurança de rotas.",
+          "type": "security"
+        },
+        {
+          "id": "mt-error-boundary",
+          "text": "Aplicação envolta em ErrorBoundary para captura de falhas.",
           "type": "quality"
         },
         {
-          "id": "auth-guards",
-          "text": "Route guards (ProtectedRoute, PublicRoute, RoleGuard) are present",
-          "type": "security"
+          "id": "mt-ux-accessibility",
+          "text": "Componentes com labels ARIA e focados em acessibilidade (a11y).",
+          "type": "quality"
         }
       ]
     }
