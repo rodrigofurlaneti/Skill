@@ -1,3 +1,14 @@
+# Visual Studio files
 .vs/
+*.user
+*.suo
+*.vsidx
+slnx.sqlite
+
+# Build folders
 bin/
 obj/
+
+# OneDrive/OS temporary files
+$RECYCLE.BIN/
+Thumbs.db
