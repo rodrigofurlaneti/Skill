@@ -1,0 +1,34 @@
+namespace {{NAMESPACE}}.Domain.Entities;
+
+public class {{ENTITY_NAME}} : Entity
+{
+    public string Name { get; private set; } = null!;
+    public string? Description { get; private set; }
+    public Guid? TenantId { get; private set; }
+
+    private {{ENTITY_NAME}}() { } // EF Core constructor
+
+    // Factory Method — the ONLY way to create
+    public static {{ENTITY_NAME}} Create(string name, string? description = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("{{ENTITY_NAME}} name cannot be empty.");
+
+        return new {{ENTITY_NAME}}
+        {
+            Name = name.Trim(),
+            Description = description?.Trim()
+        };
+    }
+
+    // Behavior methods
+    public void UpdateDetails(string name, string? description)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("{{ENTITY_NAME}} name cannot be empty.");
+
+        Name = name.Trim();
+        Description = description?.Trim();
+        SetUpdated();
+    }
+}

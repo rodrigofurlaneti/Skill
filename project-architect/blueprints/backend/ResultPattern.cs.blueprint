@@ -1,0 +1,55 @@
+namespace {{NAMESPACE}}.Application.Common.Models;
+
+public class Result
+{
+    public bool IsSuccess { get; }
+    public string? Error { get; }
+    public ResultType Type { get; }
+
+    protected Result(bool isSuccess, string? error, ResultType type)
+    {
+        IsSuccess = isSuccess;
+        Error = error;
+        Type = type;
+    }
+
+    public static Result Success() => new(true, null, ResultType.Ok);
+    public static Result Failure(string error) => new(false, error, ResultType.Failure);
+    public static Result NotFound(string error) => new(false, error, ResultType.NotFound);
+    public static Result Forbidden(string error) => new(false, error, ResultType.Forbidden);
+    public static Result ValidationError(string error) => new(false, error, ResultType.Validation);
+}
+
+public class Result<T> : Result
+{
+    public T? Value { get; }
+
+    private Result(T? value, bool isSuccess, string? error, ResultType type)
+        : base(isSuccess, error, type) => Value = value;
+
+    public static Result<T> Success(T value) => new(value, true, null, ResultType.Ok);
+    public new static Result<T> Failure(string error) => new(default, false, error, ResultType.Failure);
+    public new static Result<T> NotFound(string error) => new(default, false, error, ResultType.NotFound);
+    public new static Result<T> Forbidden(string error) => new(default, false, error, ResultType.Forbidden);
+    public new static Result<T> ValidationError(string error) => new(default, false, error, ResultType.Validation);
+}
+
+public enum ResultType
+{
+    Ok,
+    Failure,
+    NotFound,
+    Forbidden,
+    Validation
+}
+
+public record PaginatedResult<T>(
+    List<T> Items,
+    int TotalCount,
+    int PageNumber,
+    int PageSize)
+{
+    public int TotalPages => (TotalCount + PageSize - 1) / PageSize;
+    public bool HasPreviousPage => PageNumber > 1;
+    public bool HasNextPage => PageNumber < TotalPages;
+}

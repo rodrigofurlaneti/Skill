@@ -1,0 +1,13 @@
+using MediatR;
+
+namespace {{NAMESPACE}}.Domain.Common;
+
+public interface IDomainEvent : INotification
+{
+    DateTime OccurredOn { get; }
+}
+
+public abstract record BaseDomainEvent : IDomainEvent
+{
+    public DateTime OccurredOn { get; } = DateTime.UtcNow;
+}

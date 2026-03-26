@@ -1,0 +1,47 @@
+using FluentValidation;
+using MediatR;
+using {{NAMESPACE}}.Application.Common.Models;
+using {{NAMESPACE}}.Domain.Common;
+using {{NAMESPACE}}.Domain.Entities;
+using {{NAMESPACE}}.Domain.Interfaces;
+
+namespace {{NAMESPACE}}.Application.Features.{{ENTITY_NAME}}s.Commands;
+
+// Command
+public record Create{{ENTITY_NAME}}Command(
+    string Name,
+    string? Description) : IRequest<Result<Guid>>;
+
+// Validator
+public class Create{{ENTITY_NAME}}CommandValidator : AbstractValidator<Create{{ENTITY_NAME}}Command>
+{
+    public Create{{ENTITY_NAME}}CommandValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required.")
+            .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+    }
+}
+
+// Handler
+public class Create{{ENTITY_NAME}}CommandHandler : IRequestHandler<Create{{ENTITY_NAME}}Command, Result<Guid>>
+{
+    private readonly IRepository<{{ENTITY_NAME}}> _repository;
+    private readonly IUnitOfWork _uow;
+
+    public Create{{ENTITY_NAME}}CommandHandler(IRepository<{{ENTITY_NAME}}> repository, IUnitOfWork uow)
+    {
+        _repository = repository;
+        _uow = uow;
+    }
+
+    public async Task<Result<Guid>> Handle(Create{{ENTITY_NAME}}Command request, CancellationToken ct)
+    {
+        var entity = {{ENTITY_NAME}}.Create(request.Name, request.Description);
+
+        await _repository.AddAsync(entity, ct);
+        await _uow.SaveChangesAsync(ct);
+
+        return Result<Guid>.Success(entity.Id);
+    }
+}

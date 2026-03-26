@@ -11,8 +11,9 @@ import argparse
 import os
 from pathlib import Path
 
-# Configuração de caminhos
-BLUEPRINT_DIR = Path("project-architect/blueprints")
+# Configuração de caminhos (relativo ao skill root)
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+BLUEPRINT_DIR = SKILL_ROOT / "blueprints"
 
 def load_blueprint(template_path, replacements):
     """Lê um arquivo de blueprint e substitui os placeholders {{KEY}}."""
@@ -72,10 +73,35 @@ def scaffold(name: str, output: str, db: str = "sqlserver", entities: list[str] 
     create_file(str(infra_path / "Persistence" / "AppDbContext.cs"), 
                 load_blueprint("backend/AppDbContext.cs.blueprint", ctx))
 
-    # ========== 4. API LAYER ==========
+    # ========== 4. INFRASTRUCTURE LAYER (extras) ==========
+    create_file(str(infra_path / "Persistence" / "Repositories" / "Repository.cs"),
+                load_blueprint("backend/Repository.cs.blueprint", ctx))
+    create_file(str(infra_path / "InfrastructureServiceRegistration.cs"),
+                load_blueprint("backend/InfrastructureDI.cs.blueprint", ctx))
+
+    # ========== 5. API LAYER ==========
     api_path = src / f"{name}.API"
-    create_file(str(api_path / "Program.cs"), 
+    create_file(str(api_path / "Program.cs"),
                 load_blueprint("backend/Program.cs.blueprint", ctx))
+    create_file(str(api_path / "Controllers" / "ApiController.cs"),
+                load_blueprint("backend/ApiController.cs.blueprint", ctx))
+
+    for entity in entities:
+        entity_ctx = {**ctx, "ENTITY_NAME": entity}
+        create_file(str(api_path / "Controllers" / f"{entity}sController.cs"),
+                    load_blueprint("backend/EntityController.cs.blueprint", entity_ctx))
+
+    # ========== 6. DOMAIN EXTRAS ==========
+    create_file(str(domain_path / "Common" / "DomainEvent.cs"),
+                load_blueprint("backend/DomainEvent.cs.blueprint", ctx))
+    create_file(str(domain_path / "Common" / "DomainException.cs"),
+                load_blueprint("backend/DomainException.cs.blueprint", ctx))
+    create_file(str(domain_path / "Interfaces" / "IRepository.cs"),
+                load_blueprint("backend/IRepository.cs.blueprint", ctx))
+
+    # ========== 7. APPLICATION EXTRAS ==========
+    create_file(str(app_path / "ApplicationServiceRegistration.cs"),
+                load_blueprint("backend/ApplicationDI.cs.blueprint", ctx))
 
     print(f"\n✅ Backend '{name}' generated using sênior blueprints!")
 

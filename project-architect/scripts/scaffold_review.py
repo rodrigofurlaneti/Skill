@@ -11,8 +11,9 @@ import argparse
 import os
 from pathlib import Path
 
-# Configuração de caminhos para os Blueprints
-BLUEPRINT_DIR = Path("project-architect/blueprints/review")
+# Configuração de caminhos (relativo ao skill root)
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+BLUEPRINT_DIR = SKILL_ROOT / "blueprints" / "review"
 
 def load_blueprint(template_path, replacements):
     """Lê o blueprint e injeta as variáveis do projeto."""

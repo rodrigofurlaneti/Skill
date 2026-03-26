@@ -11,7 +11,8 @@ import argparse
 import os
 from pathlib import Path
 
-BLUEPRINT_DIR = Path("project-architect/blueprints/frontend")
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+BLUEPRINT_DIR = SKILL_ROOT / "blueprints" / "frontend"
 
 def load_blueprint(template_path, replacements):
     full_path = BLUEPRINT_DIR / template_path
@@ -56,7 +57,10 @@ def scaffold(name: str, output: str, features: list[str] = None):
         create_file(str(src / "components" / "ui" / f"{comp}.tsx"), 
                     load_blueprint(f"ui/{comp}.tsx.blueprint", ctx))
 
-    # ========== 4. PAGES & FEATURES ==========
+    # ========== 4. APP SHELL ==========
+    create_file(str(src / "App.tsx"), load_blueprint("App.tsx.blueprint", ctx))
+
+    # ========== 5. PAGES & FEATURES ==========
     for feature in features:
         feature_ctx = {**ctx, "FEATURE_NAME": feature, "FEATURE_CAP": feature.capitalize()}
         create_file(str(src / "pages" / feature / f"{feature.capitalize()}Page.tsx"),

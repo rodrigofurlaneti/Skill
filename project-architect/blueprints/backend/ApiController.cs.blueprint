@@ -1,0 +1,36 @@
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using {{NAMESPACE}}.Application.Common.Models;
+
+namespace {{NAMESPACE}}.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public abstract class ApiController : ControllerBase
+{
+    protected IMediator Mediator =>
+        HttpContext.RequestServices.GetRequiredService<IMediator>();
+
+    protected IActionResult Problem(Result result)
+    {
+        if (result.IsSuccess) return Ok();
+
+        var statusCode = result.Type switch
+        {
+            ResultType.NotFound => StatusCodes.Status404NotFound,
+            ResultType.Forbidden => StatusCodes.Status403Forbidden,
+            ResultType.Validation => StatusCodes.Status422UnprocessableEntity,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        return Problem(statusCode: statusCode, title: result.Error);
+    }
+
+    protected IActionResult Problem<T>(Result<T> result)
+    {
+        if (result.IsSuccess) return Ok(result.Value);
+        return Problem(result as Result);
+    }
+}

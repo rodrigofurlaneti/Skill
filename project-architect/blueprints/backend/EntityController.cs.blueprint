@@ -1,0 +1,14 @@
+using Microsoft.AspNetCore.Mvc;
+using {{NAMESPACE}}.Application.Features.{{ENTITY_NAME}}s.Commands;
+
+namespace {{NAMESPACE}}.API.Controllers;
+
+public class {{ENTITY_NAME}}sController : ApiController
+{
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] Create{{ENTITY_NAME}}Command command)
+    {
+        var result = await Mediator.Send(command);
+        return Problem(result);
+    }
+}
