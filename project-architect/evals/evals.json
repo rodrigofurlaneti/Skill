@@ -1,0 +1,109 @@
+{
+  "skill_name": "project-architect",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Preciso criar um sistema de gerenciamento de clínica veterinária. O backend deve ser em .NET com DDD e o frontend em React com TypeScript. As entidades principais são: Pet, Owner, Appointment, Veterinarian. Banco PostgreSQL.",
+      "expected_output": "Generates a complete backend scaffold with 4 entities following DDD/Clean Architecture patterns, plus a React frontend with feature pages for each entity, using PostgreSQL configuration.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "backend-structure",
+          "text": "Backend has 4 layers: Domain, Application, Infrastructure, API",
+          "type": "structural"
+        },
+        {
+          "id": "entity-rich",
+          "text": "Entities have factory methods and private setters (not anemic)",
+          "type": "code_quality"
+        },
+        {
+          "id": "cqrs-pattern",
+          "text": "Commands and Queries are separated with proper MediatR handlers",
+          "type": "pattern"
+        },
+        {
+          "id": "frontend-typed",
+          "text": "Frontend has zero 'any' types in generated code",
+          "type": "code_quality"
+        },
+        {
+          "id": "frontend-lazy",
+          "text": "Routes use React.lazy() and Suspense for code splitting",
+          "type": "performance"
+        },
+        {
+          "id": "db-postgresql",
+          "text": "Infrastructure uses UseNpgsql not UseSqlServer",
+          "type": "configuration"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Tenho um projeto .NET existente que não segue DDD direito. Os controllers têm lógica de negócio, os models são anêmicos, não tem repository pattern. Analise e me diga o que precisa mudar.",
+      "expected_output": "Identifies architectural violations: anemic models, business logic in controllers, missing repository abstraction, no CQRS, no validation pipeline. Provides specific fix recommendations with code examples.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "identifies-anemic",
+          "text": "Identifies anemic model anti-pattern",
+          "type": "analysis"
+        },
+        {
+          "id": "identifies-fat-controller",
+          "text": "Identifies business logic in controllers as a violation",
+          "type": "analysis"
+        },
+        {
+          "id": "recommends-repository",
+          "text": "Recommends implementing Repository Pattern with interfaces in Domain",
+          "type": "recommendation"
+        },
+        {
+          "id": "provides-code",
+          "text": "Provides concrete code examples for fixes, not just descriptions",
+          "type": "quality"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a fullstack e-commerce project. Name: ShopFlow. Entities: Product, Category, Order, OrderItem, Customer. Use SQL Server. Frontend with Tailwind CSS. I need the complete scaffold ready to build.",
+      "expected_output": "Runs both scaffold scripts to generate a complete backend and frontend project. Backend has all 5 entities with proper DDD structure. Frontend has pages for products, categories, orders, and customers.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "all-entities",
+          "text": "All 5 entities (Product, Category, Order, OrderItem, Customer) have files generated",
+          "type": "completeness"
+        },
+        {
+          "id": "result-pattern",
+          "text": "Application layer includes Result<T> pattern for error handling",
+          "type": "pattern"
+        },
+        {
+          "id": "pipeline-behaviors",
+          "text": "Validation, Logging, and Performance pipeline behaviors are present",
+          "type": "pattern"
+        },
+        {
+          "id": "frontend-components",
+          "text": "UI component library includes Button, Card, Input, Modal, Badge, Spinner",
+          "type": "completeness"
+        },
+        {
+          "id": "error-boundary",
+          "text": "App.tsx wraps everything in ErrorBoundary",
+          "type": "quality"
+        },
+        {
+          "id": "auth-guards",
+          "text": "Route guards (ProtectedRoute, PublicRoute, RoleGuard) are present",
+          "type": "security"
+        }
+      ]
+    }
+  ]
+}
