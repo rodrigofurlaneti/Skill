@@ -1,0 +1,25 @@
+# === Visual Studio & IDE Files ===
+.vs/
+*.user
+*.suo
+*.vsidx
+slnx.sqlite
+*.sln.doccache
+.vsidx/
+
+# === Build & Temporary Folders ===
+bin/
+obj/
+out/
+dist/
+
+# === OS & Cloud Storage (OneDrive) ===
+$RECYCLE.BIN/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# === Python (Scaffold Scripts) ===
+__pycache__/
+*.py[cod]
+*$py.class
