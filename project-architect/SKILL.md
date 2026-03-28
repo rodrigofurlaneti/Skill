@@ -71,28 +71,34 @@ Tech Lead: DRY, KISS, Result Pattern, NetArchTest enforcement.
 SRE: Multi-stage Dockerfiles (Alpine), CI/CD pipelines, Serilog, Health Checks.
 
 Critical Patterns Checklist (The Gold Standard)
-1. Product Discovery (PO) Must-Haves
-[ ] Persona Definition: Clear understanding of who is using the feature.
+### 1. Product Discovery (PO) Must-Haves
+- [ ] Persona Definition: Clear understanding of who is using the feature.
+- [ ] INVEST Stories: Stories are Independent, Valuable, Small, and Testable.
+- [ ] Acceptance Criteria: Defined in BDD/Gherkin format.
 
-[ ] INVEST Stories: Stories are Independent, Valuable, Small, and Testable.
+### 2. Technical Must-Haves (Architecture & DB)
+- [ ] Rich Entities: Business logic INSIDE the entity; private setters.
+- [ ] Fluent API: Use IEntityTypeConfiguration<T> (No Data Annotations).
+- [ ] Read Performance: All read queries MUST use .AsNoTracking().
+- [ ] Async Hygiene: CancellationToken propagated through all async calls.
 
-[ ] Acceptance Criteria: Defined in BDD/Gherkin format.
+### 4. Frontend Must-Haves
+- [ ] **Zero `any`:** All props and functions must be fully typed.
+- [ ] **Feature Folders:** Components organized by feature, not by type.
+- [ ] **Error Boundaries:** Every async operation wrapped with proper error handling.
+- [ ] **Accessibility:** All interactive elements have `aria-*` labels.
 
-2. Technical Must-Haves (Architecture & DB)
-[ ] Rich Entities: Business logic INSIDE the entity; private setters.
+### 3. UI/UX & Responsiveness
+- [ ] Mobile-First: Styles written for small screens first, then scaled up.
+- [ ] Fluid Layout: Relative units (rem, vh/vw) instead of fixed pixels.
+- [ ] Touch Targets: Minimum 44x44px for mobile interactivity.
 
-[ ] Fluent API: Use IEntityTypeConfiguration<T> (No Data Annotations).
+### 5. Security Must-Haves
+- [ ] **JWT Validation:** Token expiration, audience, and issuer always validated.
+- [ ] **OWASP Top 10:** Input sanitization, SQL injection prevention, XSS protection.
+- [ ] **Secrets Management:** No secrets in `appsettings.json`; use environment variables or Key Vault.
 
-[ ] Read Performance: All read queries MUST use .AsNoTracking().
-
-[ ] Async Hygiene: CancellationToken propagated through all async calls.
-
-3. UI/UX & Responsiveness
-[ ] Mobile-First: Styles written for small screens first, then scaled up.
-
-[ ] Fluid Layout: Relative units (rem, vh/vw) instead of fixed pixels.
-
-[ ] Touch Targets: Minimum 44x44px for mobile interactivity.
+> Reference: `references/security-identity.md`
 
 Project Structure
 project-architect/
