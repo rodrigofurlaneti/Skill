@@ -1,0 +1,45 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace {{NAMESPACE}}.Infrastructure.MultiTenancy;
+
+public class TenantMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public TenantMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context, ITenantService tenantService)
+    {
+        // 1. Tenta obter o Tenant ID do Header (enviado pelo seu Axios interceptor)
+        if (context.Request.Headers.TryGetValue("X-Tenant-Id", out var tenantIdString))
+        {
+            if (Guid.TryParse(tenantIdString, out var tenantId))
+            {
+                tenantService.SetTenant(tenantId);
+            }
+        }
+        
+        // Se não houver Header, o sistema pode barrar ou seguir como 'Default'
+        // dependendo da sua regra de negócio (ex: rotas públicas)
+
+        await _next(context);
+    }
+}
+
+// Interface para ser injetada no DbContext e Repositórios
+public interface ITenantService
+{
+    Guid? GetTenantId();
+    void SetTenant(Guid tenantId);
+}
+
+public class TenantService : ITenantService
+{
+    private Guid? _tenantId;
+    public Guid? GetTenantId() => _tenantId;
+    public void SetTenant(Guid tenantId) => _tenantId = tenantId;
+}

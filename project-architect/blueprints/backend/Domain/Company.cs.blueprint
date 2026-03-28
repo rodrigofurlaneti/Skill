@@ -1,0 +1,25 @@
+﻿namespace {{NAMESPACE}}.Domain.Entities;
+
+public sealed class Company : Entity
+{
+    public string Name { get; private set; } = string.Empty;
+    public string Document { get; private set; } = string.Empty; // CNPJ/TaxId
+    public Guid OwnerId { get; private set; }
+    public Guid SubscriptionPlanId { get; private set; }
+    public SubscriptionPlan SubscriptionPlan { get; private set; } = null!;
+
+    private Company() { }
+
+    public static Company Create(string name, string document, Guid ownerId, Guid planId)
+    {
+        return new Company
+        {
+            Name = name.Trim(),
+            Document = document,
+            OwnerId = ownerId,
+            SubscriptionPlanId = planId
+        };
+    }
+
+    public void UpdatePlan(Guid newPlanId) => SubscriptionPlanId = newPlanId;
+}

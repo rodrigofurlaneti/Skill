@@ -1,20 +1,22 @@
----
+﻿---
 name: project-architect
 description: >
-  Fullstack project architect for .NET + React applications with PO, Senior DBA, 
-  UX/UI, Tech Lead, and DevOps/SRE focus. 
-  Use this skill to map business processes (PO), create projects (scaffold), 
-  validate architectures, refactor code to follow DDD/SOLID, optimize EF Core, 
-  perform code reviews, or configure cloud infrastructure (Docker/CI/CD).
-  Trigger on: "mapear negócio", "product discovery", "analise de requisitos", "criar projeto", 
-  "scaffold", "DDD", "clean architecture", "EF Core performance", "multi-tenant isolation", 
-  "code review", "revisar código", "refatoração", "design system", "configurar devops", "dockerizar".
+	Fullstack project architect for .NET + React applications with PO, Senior DBA,
+	UX/UI, Tech Lead, and DevOps/SRE focus.
+	Use this skill to map business processes (PO), create projects (scaffold),
+	validate architectures, refactor code to follow DDD/SOLID, optimize EF Core,
+	perform code reviews, configure cloud infrastructure (Docker/CI/CD),
+	and ensure responsive multi-screen compatibility.
+
+	Trigger on: "business mapping", "product discovery", "requirements analysis", "create project",
+	"scaffold", "DDD", "clean architecture", "EF Core performance", "multi-tenant isolation",
+	"code review", "refactoring", "design system", "setup devops", "dockerize",
+	"responsive UI", "multi-device".
 ---
 
 # Project Architect — From Business Discovery to DevOps Mastery
 
-This skill creates production-grade fullstack applications, maps business requirements, validates existing projects, or performs senior-level governance. It encapsulates the architecture wisdom of real-world projects: Domain-Driven Design, Clean Architecture, SOLID, High-Performance Database Design, Distinctive UX/UI, and SRE Resilience.
-
+This skill creates production-grade fullstack applications, maps business requirements, validates existing projects, or performs senior-level governance. It encapsulates the architecture wisdom of real-world projects: Domain-Driven Design, Clean Architecture, SOLID, High-Performance Database Design, Responsive/Adaptive UX, and SRE Resilience.
 ## Modes of Operation
 
 1. **Discovery Mode (PO)** — Map business processes, generate user stories (INVEST), and functional requirements.
@@ -39,15 +41,13 @@ python scripts/scaffold_all.py --name MyApp --output ./output --db sqlserver --e
 
 Step 1: Architecture & Governance Overview
 Product & Discovery (PO Agent)
-Process Mapping: Happy Path vs Exception flows mapping.
+Process Mapping: Happy Path vs. Exception flows mapping.
 
 User Stories: INVEST standard with Gherkin (BDD) acceptance criteria.
 
 Prioritization: MoSCoW methodology for MVP definition.
 
 Backend (.NET) — Clean Architecture + Senior DBA
-The backend follows a strict layered architecture where dependencies flow inward.
-
 Domain Layer: Sacred business rules, rich entities, value objects, domain events.
 
 Application Layer: CQRS with MediatR, FluentValidation, Result Pattern.
@@ -59,9 +59,11 @@ DB Mastery: No nvarchar(max), mandatory AsNoTracking, AsSplitQuery, and strict t
 Frontend (React + TypeScript) — Feature-Based + UX Specialist
 UI/UX: Glassmorphism, Plus Jakarta Sans, and high-performance animations.
 
+Responsiveness: Mobile-First Adaptive Design. Full support for Mobile, Tablet, and Desktop via CSS Grid/Flexbox.
+
 State: Zustand for client state, React Query for server state.
 
-Components: Typed props (zero any), accessible UI library (Button, Card, Input, Modal).
+Components: Typed props (zero any), accessible UI library (a11y), and responsive breakpoints.
 
 Code Review & DevOps — Tech Lead + SRE Governance
 Tech Lead: DRY, KISS, Result Pattern, NetArchTest enforcement.
@@ -77,7 +79,7 @@ Critical Patterns Checklist (The Gold Standard)
 [ ] Acceptance Criteria: Defined in BDD/Gherkin format.
 
 2. Technical Must-Haves (Architecture & DB)
-[ ] Rich Entities: Business logic IN the entity; private setters.
+[ ] Rich Entities: Business logic INSIDE the entity; private setters.
 
 [ ] Fluent API: Use IEntityTypeConfiguration<T> (No Data Annotations).
 
@@ -85,30 +87,37 @@ Critical Patterns Checklist (The Gold Standard)
 
 [ ] Async Hygiene: CancellationToken propagated through all async calls.
 
+3. UI/UX & Responsiveness
+[ ] Mobile-First: Styles written for small screens first, then scaled up.
+
+[ ] Fluid Layout: Relative units (rem, vh/vw) instead of fixed pixels.
+
+[ ] Touch Targets: Minimum 44x44px for mobile interactivity.
+
 Project Structure
 project-architect/
-├── SKILL.md                          ← This file
+├── SKILL.md                ← This file
 ├── blueprints/
-│   ├── discovery/                    ← PO/Business templates
-│   ├── backend/                      ← .NET code templates
-│   ├── frontend/                     ← React code templates
-│   ├── auth/                         ← Security templates
-│   └── review/                       ← Governance templates
-├── references/                       ← Knowledge base
-│   ├── product-discovery.md          ← Business & PO patterns
-│   ├── dotnet-ddd.md                 ← Architecture patterns
-│   ├── ef-core-dba.md                ← Database mastery
-│   ├── react-frontend.md             ← Frontend patterns
-│   ├── ux-ui-patterns.md             ← Design System
-│   ├── code-review.md                ← Tech Lead governance
-│   ├── security-identity.md          ← Auth patterns
-│   └── devops-observability.md       ← SRE patterns
-├── scripts/                          ← Scaffold generators
-│   ├── scaffold_discovery.py         ← PO Document generator
-│   ├── scaffold_all.py               ← Master orchestrator
-│   └── ... (layer specific scripts)
-├── evals/                            ← Test scenarios
-└── adrs/                             ← Architecture Decisions
+│   ├── discovery/          ← PO/Business templates
+│   ├── backend/            ← .NET code templates (DDD)
+│   ├── frontend/           ← React code templates (Responsive)
+│   ├── auth/               ← Security templates
+│   └── review/             ← Governance templates
+├── references/             ← Knowledge base
+│   ├── product-discovery.md
+│   ├── dotnet-ddd.md
+│   ├── ef-core-dba.md
+│   ├── react-frontend.md   ← Including Multi-screen patterns
+│   ├── ux-ui-patterns.md   ← Including Responsive standards
+│   ├── code-review.md
+│   ├── security-identity.md
+│   └── devops-observability.md
+├── scripts/                ← Scaffold generators
+│   ├── scaffold_discovery.py
+│   └── scaffold_all.py
+├── evals/                  ← Test scenarios
+└── adrs/                   ← Architecture Decisions
+
 Reference Files & Scaffold Scripts
 references/product-discovery.md: PO patterns, INVEST stories, MoSCoW prioritization.
 

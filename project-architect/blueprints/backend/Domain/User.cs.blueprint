@@ -1,0 +1,30 @@
+﻿namespace {{NAMESPACE}}.Domain.Entities;
+
+public sealed class User : Entity
+{
+    public Guid CompanyId { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
+    public string PasswordHash { get; private set; } = string.Empty;
+    public string Role { get; private set; } = "Member"; // UserRole Enum
+    public string Status { get; private set; } = "Active";
+
+    private User() { }
+
+    public static User Create(Guid companyId, string name, string email, string passwordHash, string role = "Member")
+    {
+        var user = new User
+        {
+            CompanyId = companyId,
+            Name = name.Trim(),
+            Email = email.ToLower().Trim(),
+            PasswordHash = passwordHash,
+            Role = role
+        };
+
+        // Trigger de evento de domínio para o MediatR
+        // user.AddDomainEvent(new UserCreatedEvent(user)); 
+        
+        return user;
+    }
+}

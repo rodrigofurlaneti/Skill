@@ -1,0 +1,46 @@
+﻿import React from 'react';
+import styled from 'styled-components';
+import { useBreakpoint } from '../hooks/useBreakpoint'; // O hook que criamos
+import { theme } from './Theme';
+
+const NavWrapper = styled.nav`
+  position: fixed;
+  background: ${theme.effects.glassmorphism.backgroundColor};
+  backdrop-filter: ${theme.effects.glassmorphism.backdropFilter};
+  border: ${theme.effects.glassmorphism.border};
+  z-index: 1000;
+
+  /* Desktop Sidebar Mode */
+  @media (min-width: ${theme.breakpoints.lg}) {
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 260px;
+    flex-direction: column;
+    padding: 2rem 1rem;
+  }
+
+  /* Mobile Bottom Nav Mode */
+  @media (max-width: ${theme.breakpoints.lg}) {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px 20px 0 0;
+  }
+`;
+
+export const Navigation: React.FC = () => {
+  const { isMobile } = useBreakpoint();
+
+  return (
+    <NavWrapper>
+       {/* Aqui você renderiza itens diferentes ou ícones dependendo de isMobile */}
+       <NavItem icon="home" label={!isMobile ? "Home Dashboard" : "Home"} />
+       <NavItem icon="settings" label={!isMobile ? "System Settings" : "Settings"} />
+    </NavWrapper>
+  );
+};

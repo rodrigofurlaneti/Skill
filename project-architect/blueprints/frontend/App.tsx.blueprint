@@ -1,29 +1,74 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+﻿import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuthStore } from '@/store/authStore';
+import { ErrorBoundary } from './ui/ErrorBoundary'; // O padrão que sugeri
+import { Navigation } from './ui/Navigation';       // O padrão Sidebar/BottomNav
+import { Container } from './ui/Container';        // O padrão Fluid Container
 
+// React Query Client com os padrões de performance definidos no seu SKILL.md
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: 2 * 60 * 1000, retry: 1 },
+    queries: { 
+      staleTime: 5 * 60 * 1000, // 5 min
+      retry: 1,
+      refetchOnWindowFocus: false 
+    },
   },
 });
 
+// Lazy Loading das Features (Code Splitting para performance mobile)
+const LoginPage = lazy(() => import('@/features/auth/LoginPage'));
+const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
+
+// Fallback visual usando o seu Design System (Glassmorphism + Spin)
 const LoadingFallback = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+  <div className="flex items-center justify-center h-screen bg-slate-900">
+    <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin shadow-lg" />
   </div>
 );
 
+// Protected Route Wrapper - O "Guarda" da aplicação
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = useAuthStore((state) => !!state.token);
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+};
+
 export default function App() {
+  const isAuthenticated = useAuthStore((state) => !!state.token);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<div>{{NAME}} — Home</div>} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          {/* Se estiver logado, renderiza a navegação adaptativa (Sidebar ou BottomNav) */}
+          {isAuthenticated && <Navigation />}
+
+          <main className={isAuthenticated ? "lg:pl-[260px] pb-[65px] lg:pb-0" : ""}>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/login" element={<LoginPage />} />
+
+                {/* Private Routes (Wrapped for Security) */}
+                <Route 
+                  path="/" 
+                  element={
+                    <PrivateRoute>
+                      <Container>
+                        <DashboardPage />
+                      </Container>
+                    </PrivateRoute>
+                  } 
+                />
+
+                {/* Fallback 404 */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </main>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }

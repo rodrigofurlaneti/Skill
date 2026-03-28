@@ -1,0 +1,41 @@
+﻿// Custom Hook for React Breakpoint Detection
+import { useState, useEffect } from 'react';
+import { theme } from '../ui/Theme'; // Adjust path as needed
+
+// Helper to remove 'px' and convert to number
+const parseBreakpoint = (breakpoint: string): number => {
+  return parseInt(breakpoint.replace('px', ''), 10);
+};
+
+export const useBreakpoint = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Initial call
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Defined states for code-level decision making
+  return {
+    width: windowWidth,
+    isXs: windowWidth < parseBreakpoint(theme.breakpoints.sm),
+    isSm: windowWidth >= parseBreakpoint(theme.breakpoints.sm) && windowWidth < parseBreakpoint(theme.breakpoints.md),
+    isMd: windowWidth >= parseBreakpoint(theme.breakpoints.md) && windowWidth < parseBreakpoint(theme.breakpoints.lg),
+    isLg: windowWidth >= parseBreakpoint(theme.breakpoints.lg),
+    
+    // Contextual semantic states
+    isMobile: windowWidth < parseBreakpoint(theme.breakpoints.md),
+    isTablet: windowWidth >= parseBreakpoint(theme.breakpoints.md) && windowWidth < parseBreakpoint(theme.breakpoints.lg),
+    isDesktop: windowWidth >= parseBreakpoint(theme.breakpoints.lg),
+  };
+};

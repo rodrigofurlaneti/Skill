@@ -1,0 +1,57 @@
+﻿using {{NAMESPACE}}.Domain.Common;
+using {{NAMESPACE}}.Domain.Enums;
+
+namespace {{NAMESPACE}}.Domain.Entities;
+
+/// <summary>
+/// Represents a system notification for a specific user.
+/// Supports deep-linking via ReferenceType and ReferenceId.
+/// </summary>
+public sealed class Notification : Entity
+{
+    public Guid UserId { get; private set; }
+    public NotificationType Type { get; private set; }
+    public string Title { get; private set; } = string.Empty;
+    public string? Message { get; private set; }
+    
+    // Poly-morphic references (e.g., "Project", "Task", "Invite")
+    public string? ReferenceType { get; private set; }
+    public Guid? ReferenceId { get; private set; }
+    
+    public bool IsRead { get; private set; } = false;
+    public DateTime? ReadAt { get; private set; }
+    public DateTime? ExpiresAt { get; private set; }
+
+    private Notification() { } // EF Core
+
+    public static Notification Create(
+        Guid userId, 
+        NotificationType type, 
+        string title,
+        string? message = null, 
+        string? referenceType = null, 
+        Guid? referenceId = null)
+    {
+        return new Notification
+        {
+            UserId = userId,
+            Type = type,
+            Title = title.Trim(),
+            Message = message?.Trim(),
+            ReferenceType = referenceType,
+            ReferenceId = referenceId,
+            ExpiresAt = DateTime.UtcNow.AddDays(90) // Auto-cleanup potential
+            // CreatedAt and UpdatedAt are handled by AuditInterceptor
+        };
+    }
+
+    public void MarkAsRead()
+    {
+        if (!IsRead)
+        {
+            IsRead = true;
+            ReadAt = DateTime.UtcNow;
+            // No need for manual Touch() if using AuditInterceptor
+        }
+    }
+}

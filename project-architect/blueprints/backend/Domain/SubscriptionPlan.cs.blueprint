@@ -1,0 +1,31 @@
+﻿namespace {{NAMESPACE}}.Domain.Entities;
+
+public sealed class SubscriptionPlan : Entity
+{
+    public string Name { get; private set; } = string.Empty;
+    public int MaxUsers { get; private set; }
+    public int MaxProjects { get; private set; }
+    public bool IsActive { get; private set; } = true;
+
+    private SubscriptionPlan() { } 
+
+    public static SubscriptionPlan Create(string name, int maxUsers, int maxProjects)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Plan name is required.");
+
+        return new SubscriptionPlan
+        {
+            Name = name.Trim(),
+            MaxUsers = maxUsers,
+            MaxProjects = maxProjects,
+            IsActive = true
+        };
+    }
+
+    public static SubscriptionPlan Free() => Create("Free", 2, 1);
+    public static SubscriptionPlan Plus() => Create("Plus", 10, 5);
+
+    public bool AllowsMoreUsers(int currentCount) => currentCount < MaxUsers;
+    public bool AllowsMoreProjects(int currentCount) => currentCount < MaxProjects;
+}

@@ -1,0 +1,49 @@
+﻿// Blueprint for Theme and Responsiveness Breakpoints
+export const theme = {
+  // Breakpoints consistent with reference/ux-ui-patterns.md
+  breakpoints: {
+    xs: '480px',   // Mobile Small
+    sm: '640px',   // Mobile Large
+    md: '768px',   // Tablet
+    lg: '1024px',  // Desktop
+    xl: '1280px',  // Large Desktop
+    '2xl': '1536px' // Ultra Wide
+  },
+  
+  // Design System Colors (including Glassmorphism)
+  colors: {
+    primary: {
+      light: '#A78BFA', // Violet 400
+      main: '#7C3AED',  // Violet 600
+      dark: '#5B21B6',  // Violet 800
+    },
+    background: {
+      default: '#0F172A', // Slate 900
+      glass: 'rgba(31, 41, 55, 0.7)', // Slate 800 with 70% opacity
+    },
+    border: {
+      glass: 'rgba(255, 255, 255, 0.1)',
+    }
+  },
+
+  // Responsive Typography
+  typography: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    h1: {
+      fontSize: 'clamp(2.5rem, 5vw, 4rem)', // Fluid typography
+      fontWeight: 800,
+    }
+  },
+  
+  // Custom Styles for Glassmorphism
+  effects: {
+    glassmorphism: {
+      backdropFilter: 'blur(10px) saturate(180%)',
+      backgroundColor: 'rgba(31, 41, 55, 0.7)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+    }
+  }
+};
+
+export type Theme = typeof theme;

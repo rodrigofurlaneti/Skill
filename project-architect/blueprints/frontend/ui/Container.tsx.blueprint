@@ -1,0 +1,43 @@
+﻿// Responsive Fluid Container Blueprint
+import React from 'react';
+import styled from 'styled-components'; // or Tailwind equivalent classes
+import { theme } from './Theme';
+
+const StyledContainer = styled.div`
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem; // Mobile gutter
+  padding-left: 1rem; // Mobile gutter
+
+  // Fluid transition between breakpoints
+  transition: max-width 0.3s ease-in-out;
+
+  /* Media Queries based on Theme Breakpoints */
+  @media (min-width: ${theme.breakpoints.sm}) {
+    max-width: 640px;
+  }
+  
+  @media (min-width: ${theme.breakpoints.md}) {
+    max-width: 768px;
+    padding-right: 2rem; // Tablet gutter
+    padding-left: 2rem;
+  }
+  
+  @media (min-width: ${theme.breakpoints.lg}) {
+    max-width: 1024px;
+  }
+  
+  @media (min-width: ${theme.breakpoints.xl}) {
+    max-width: 1280px;
+  }
+`;
+
+interface ContainerProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Container: React.FC<ContainerProps> = ({ children, className }) => {
+  return <StyledContainer className={className}>{children}</StyledContainer>;
+};

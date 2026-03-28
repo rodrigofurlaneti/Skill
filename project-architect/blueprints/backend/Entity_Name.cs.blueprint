@@ -1,0 +1,57 @@
+﻿using {{NAMESPACE}}.Domain.Common;
+using {{NAMESPACE}}.Domain.Exceptions;
+
+namespace {{NAMESPACE}}.Domain.Entities;
+
+// Entidade seguindo Clean Architecture + DDD + Multi-tenancy
+public class {{ENTITY_NAME}} : Entity, IAggregateRoot
+{
+    // Propriedades com Private Set (Encapsulamento Total)
+    public string Name { get; private set; } = null!;
+    public string? Description { get; private set; }
+
+    // O TenantId agora é herdado de Entity.cs, mas 
+    // pode ser exposto aqui se houver lógica específica.
+
+    // Construtor privado para o EF Core (Reconstituição)
+    private {{ENTITY_NAME}}() { }
+
+    /// <summary>
+    /// Factory Method — A única porta de entrada para criação.
+    /// Garante que as regras de negócio iniciais sejam respeitadas.
+    /// </summary>
+    public static {{ENTITY_NAME}} Create(string name, string? description = null, Guid? tenantId = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("{{ENTITY_NAME}} name is required and cannot be empty.");
+
+        var entity = new {{ENTITY_NAME}}
+        {
+            Name = name.Trim(),
+            Description = description?.Trim()
+        };
+
+        // Se for Multi-tenant, injetamos o TenantId aqui
+        if (tenantId.HasValue)
+            entity.SetTenant(tenantId.Value);
+
+        // Opcional: Adicionar um Domain Event de criação
+        // entity.AddDomainEvent(new {{ENTITY_NAME}}CreatedEvent(entity));
+
+        return entity;
+    }
+
+    /// <summary>
+    /// Método de Comportamento para atualização de estado.
+    /// </summary>
+    public void UpdateDetails(string name, string? description)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Updated name for {{ENTITY_NAME}} cannot be empty.");
+
+        Name = name.Trim();
+        Description = description?.Trim();
+        
+        // O campo 'UpdatedAt' será preenchido automaticamente pelo EF Interceptor
+    }
+}

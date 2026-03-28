@@ -1,0 +1,64 @@
+﻿// Blueprint for centralized HTTP interception (Axios)
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { authStore } from '../stores/authStore'; // Adust path to authStore.ts.blueprint
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const apiClient: AxiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// REQUEST INTERCEPTOR: Inject Authentication Token
+apiClient.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    const token = authStore.getState().token;
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
+
+// RESPONSE INTERCEPTOR: Centralized Error Handling (401, 500)
+apiClient.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  async (error: AxiosError) => {
+    const originalRequest = error.config;
+    
+    // Handle 401 Unauthorized (Expired Token)
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      
+      try {
+        // Handle Token Refresh logic here calling authStore
+        const newToken = await authStore.getState().refreshToken();
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        // If refresh fails, logout user
+        authStore.getState().logout();
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+    
+    // Handle 500 Internal Server Error with UI Notification (Toast, etc.)
+    if (error.response?.status === 500) {
+      console.error('SERVER ERROR (500):', error.message);
+      // Integration with reference/ux-ui-patterns.md Toast notification
+      // toast.error('An unexpected server error occurred.');
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
+export default apiClient;
