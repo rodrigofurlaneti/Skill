@@ -1,4 +1,4 @@
-# AGENTS.md — Backend DingFood
+# AGENTS.md — Backend NAME_PROJECT
 
 Guia de padrões do backend. Leia antes de criar ou alterar qualquer código em `backend/`.
 
@@ -29,12 +29,12 @@ o código vence — e o documento deve ser corrigido.
 Clean Architecture em quatro projetos. A dependência aponta sempre para dentro:
 
 ```
-DingFood.API  ──►  DingFood.Application  ──►  DingFood.Domain
+NAME_PROJECT.API  ──►  NAME_PROJECT.Application  ──►  NAME_PROJECT.Domain
       │                                            ▲
-      └──────►  DingFood.Infrastructure  ──────────┘
+      └──────►  NAME_PROJECT.Infrastructure  ──────────┘
 ```
 
-Regras **verificadas por teste** em `test/DingFood.ArchTests/ArchitectureTests.cs`. Quebrar
+Regras **verificadas por teste** em `test/NAME_PROJECT.ArchTests/ArchitectureTests.cs`. Quebrar
 qualquer uma delas derruba o CI:
 
 - **Domain** não pode depender de Application, Infrastructure, API, MediatR, EF Core nem FluentValidation.
@@ -48,7 +48,7 @@ interface na Application e implementação na Infrastructure.
 ### Onde cada coisa mora
 
 ```
-src/DingFood.Domain/
+src/NAME_PROJECT.Domain/
   Constants/          FeatureCodes, LookupIds, validadores puros (CnpjValidator, CepValidator)
   Entities/           entidades e agregados
   Enums/
@@ -56,7 +56,7 @@ src/DingFood.Domain/
   Primitives/         Entity, AggregateRoot, Result, Error, ValueObject, IDomainEvent
   Repositories/       APENAS interfaces (IXRepository), + IUnitOfWork
 
-src/DingFood.Application/
+src/NAME_PROJECT.Application/
   Abstractions/
     Messaging/        ICommand, IQuery, BaseCommandHandler, BaseQueryHandler
     Integrations/<Provedor>/   contrato do parceiro (interface + DTOs)
@@ -65,7 +65,7 @@ src/DingFood.Application/
     <Ação>/           Command/Query + Handler + Validator
     XResponse.cs      contrato de saída da área
 
-src/DingFood.Infrastructure/
+src/NAME_PROJECT.Infrastructure/
   Integrations/<Provedor>/     client HTTP + Settings + background services
   Persistence/
     AppDbContext.cs                    DbSets
@@ -77,7 +77,7 @@ src/DingFood.Infrastructure/
   Authentication|Security|Storage|Printing|Payments|Fiscal|Tenancy|Delivery|Time/
   DependencyInjection.cs               registro de TUDO da Infrastructure
 
-src/DingFood.API/
+src/NAME_PROJECT.API/
   Controllers/        XController : ApiController
   Middleware/         ExceptionHandling, CompanyContext, WorkplaceContext
   Authorization/      FeatureAccessConvention, FeatureAuthorizationHandler
@@ -93,12 +93,12 @@ src/DingFood.API/
 |---|---|
 | `*CommandHandler` | `internal sealed`, na Application |
 | `*QueryHandler` | `internal sealed`, na Application |
-| `*Repository` (impl.) | `internal sealed`, em `DingFood.Infrastructure.Persistence.Repositories` |
-| `I*Repository` (interface) | em `DingFood.Domain.Repositories` |
-| `*Configuration` | `internal sealed`, em `DingFood.Infrastructure.Persistence.Configurations` |
+| `*Repository` (impl.) | `internal sealed`, em `NAME_PROJECT.Infrastructure.Persistence.Repositories` |
+| `I*Repository` (interface) | em `NAME_PROJECT.Domain.Repositories` |
+| `*Configuration` | `internal sealed`, em `NAME_PROJECT.Infrastructure.Persistence.Configurations` |
 | `*Response` | `sealed` |
 | `*Validator` | herda `AbstractValidator<T>` |
-| `*Command` / `*Query` | dentro de `DingFood.Application.Features` |
+| `*Command` / `*Query` | dentro de `NAME_PROJECT.Application.Features` |
 | Classes em `Domain.Entities` | `sealed` |
 | Agregados | herdam `AggregateRoot` |
 | Entidades filhas | herdam `Entity`, **não** `AggregateRoot` |
@@ -410,13 +410,13 @@ O projeto **usa EF Core Migrations**. A baseline é `20260914144158_InitialCreat
 cd backend
 
 dotnet ef migrations add <Nome> `
-  --project src\DingFood.Infrastructure `
-  --startup-project src\DingFood.API `
+  --project src\NAME_PROJECT.Infrastructure `
+  --startup-project src\NAME_PROJECT.API `
   --output-dir Migrations
 
 dotnet ef database update `
-  --project src\DingFood.Infrastructure `
-  --startup-project src\DingFood.API
+  --project src\NAME_PROJECT.Infrastructure `
+  --startup-project src\NAME_PROJECT.API
 ```
 
 Antes de aplicar, **leia o `Up()` gerado**. Ele deve conter só o que você mudou. `CreateTable`
@@ -466,7 +466,7 @@ Regras:
   `<Provedor>.<Motivo>` (`Cnpja.RateLimited`, `ViaCep.Timeout`). Só deixa escapar exceção
   realmente inesperada.
 - Segredo persistido passa por `ISecretProtector.Protect(purpose, value)`. O `purpose` é uma
-  string fixa e versionada (`"DingFood.Integrations.Ifood.ClientSecret.v1"`) — trocá-la torna
+  string fixa e versionada (`"NAME_PROJECT.Integrations.Ifood.ClientSecret.v1"`) — trocá-la torna
   ilegíveis os segredos já salvos.
 - Consulta a serviço externo com limite de uso deve ter **cache no banco**: entidade snapshot com
   `RawJson` (`longtext`) + `QueriedAt` + TTL configurável. Veja `CnpjQuery` e `CepQuery`.
@@ -515,18 +515,18 @@ documenta a regra e passa a valer se o command virar `[FromBody]`.
 ## 13. Testes
 
 ```
-test/DingFood.Tests/      unitários, espelhando a estrutura src/ (Domain, Application, Infrastructure, API)
-test/DingFood.ArchTests/  regras de arquitetura (NetArchTest) — §3
-test/DingFood.Specs/      BDD
-test/DingFood.E2ETests/
+test/NAME_PROJECT.Tests/      unitários, espelhando a estrutura src/ (Domain, Application, Infrastructure, API)
+test/NAME_PROJECT.ArchTests/  regras de arquitetura (NetArchTest) — §3
+test/NAME_PROJECT.Specs/      BDD
+test/NAME_PROJECT.E2ETests/
 ```
 
 Ferramentas: xUnit, FluentAssertions, NSubstitute, `Microsoft.EntityFrameworkCore.Sqlite` para
 DbContext em memória.
 
 ```powershell
-dotnet test test/DingFood.Tests --settings coverage.runsettings --collect:"XPlat Code Coverage"
-dotnet test test/DingFood.ArchTests
+dotnet test test/NAME_PROJECT.Tests --settings coverage.runsettings --collect:"XPlat Code Coverage"
+dotnet test test/NAME_PROJECT.ArchTests
 ```
 
 Feature nova deve vir com teste de handler cobrindo sucesso e as falhas de negócio.
@@ -566,9 +566,9 @@ teste → sonar end.
 
 ## 16. Antes de abrir PR
 
-- [ ] `dotnet build DingFood.sln -c Release` sem erro
-- [ ] `dotnet test test/DingFood.ArchTests` verde
-- [ ] `dotnet test test/DingFood.Tests` verde
+- [ ] `dotnet build NAME_PROJECT.sln -c Release` sem erro
+- [ ] `dotnet test test/NAME_PROJECT.ArchTests` verde
+- [ ] `dotnet test test/NAME_PROJECT.Tests` verde
 - [ ] Entidade nova classificada em `OperationalScopes` (ou com coluna de tenant / FK de agregado)
 - [ ] `DbSet` declarado no `AppDbContext`
 - [ ] Registro em `Infrastructure/DependencyInjection.cs`
